@@ -1,0 +1,25 @@
+{
+    "manifest_version": 2,
+    "name": "vext",
+    "version": "0.0.1",
+    "background": {
+        "scripts": [
+            "js/background.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://fav.vip.com/goods?ff=fav_good_home"
+            ],
+            "js": [
+                "js/content-script.js"
+            ],
+            "run_at": "document_end"
+        }
+    ],
+    "web_accessible_resources": [
+        "js/lodash.min.js",
+        "js/inject.js"
+    ]
+}
