@@ -9,7 +9,11 @@ function addToCart(size_id, timex) {
     $.ajax({
         url: `https://cart.vip.com/te2/add.php?size_id=${size_id}&num=1&client_time=${timex}&act=&mars_cid=000000`,
         dataType: "jsonp"
-    });
+    }).then(res => {
+        if(res.code == 200){
+            console.log('[抢购成功!]')
+        }
+    })
 }
 
 // 收藏列表
@@ -25,19 +29,16 @@ $.ajax({
     goodsList = res.data.future.filter(item => Math.abs(item.sell_time_from - startTime) < 3000).map(item => item.size_id);
     console.log('开始时间>>', new Date(startTime));
     console.log('准备商品>>', goodsList);
+
     timer = setInterval(()=>{
-        if(Math.abs(new Date().getTime() - startTime)<1500){
+        if(Math.abs(new Date().getTime() - startTime)<300){
             const timex = parseInt(new Date().getTime() / 1000);
             goodsList.forEach(item => {
                 addToCart(item, timex);
             });
-        }else{
-            if(parseInt(new Date().getMinutes()%20)==5 && parseInt(new Date().getSeconds())==1){
-                console.log('>> 刷新页面 >>')
-                window.location.reload();
-            }
         }
-    },250);
+    },30);
+
 });
 
 
