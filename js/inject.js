@@ -1,6 +1,8 @@
+
 const doneList = [];
 
 let startTime = new Date().getTime();
+let goodsList = [];
 let timer = null;
 
 function addToCart(size_id, timex) {
@@ -10,38 +12,32 @@ function addToCart(size_id, timex) {
     });
 }
 
-function detailLoop() {
-    $.ajax({
-        url: "https://myi.vip.com/fav_sku/goods_detail?sale_status=ON_SALE&count=50&warehouse=VIP_NH&is_old=1",
-        dataType: "jsonp"
-    }).then(res => {
-        if (res.data.on_sale.length != 0) {
-            const timex = parseInt(new Date().getTime() / 1000);
-            res.data.on_sale.forEach(item => {
-                if (doneList.indexOf(item.size_id) == -1) {
-                    addToCart(item.size_id, timex);
-                    addToCart(item.size_id, timex+1);
-                    addToCart(item.size_id, timex+2);
-                    doneList.push(item.size_id);
-                }
-            });
-        }
-    });
-}
-
 // 收藏列表
 $.ajax({
     url: `https://myi.vip.com/fav_sku/goods_detail?sale_status=FUTURE&count=50&warehouse=VIP_NH&is_old=1`,
     dataType: "jsonp"
 }).then(res=>{
+    if(res.data.future.length == 0){
+        console.log('>> 收藏列表为空 >>');
+        return;
+    }
     startTime = _.min(res.data.future.map(item => item.sell_time_from));
+    goodsList = res.data.future.filter(item => Math.abs(item.sell_time_from - startTime) < 3000).map(item => item.size_id);
+    console.log('开始时间>>', new Date(startTime));
+    console.log('准备商品>>', goodsList);
     timer = setInterval(()=>{
-        if(Math.abs(new Date().getTime() - startTime)<3000){
-            detailLoop();
+        if(Math.abs(new Date().getTime() - startTime)<1500){
+            const timex = parseInt(new Date().getTime() / 1000);
+            goodsList.forEach(item => {
+                addToCart(item, timex);
+            });
         }else{
-            console.log('ticktock');
+            if(parseInt(new Date().getMinutes()%20)==5 && parseInt(new Date().getSeconds())==1){
+                console.log('>> 刷新页面 >>')
+                window.location.reload();
+            }
         }
-    },300);
+    },250);
 });
 
 
