@@ -31,7 +31,7 @@ $.ajax({
     console.log('准备商品>>', goodsList);
 
     timer = setInterval(()=>{
-        if(Math.abs(new Date().getTime() - startTime)<300){
+        if(Math.abs(new Date().getTime() - startTime)<1000){
             const timex = parseInt(new Date().getTime() / 1000);
             goodsList.forEach(item => {
                 addToCart(item, timex);
