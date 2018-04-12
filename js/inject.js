@@ -37,7 +37,7 @@ $.ajax({
                 addToCart(item, timex);
             });
         }
-    },50);
+    },25);
 
 });
 
