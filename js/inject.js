@@ -10,7 +10,7 @@ function addToCart(size_id, timex) {
         url: `https://cart.vip.com/te2/add.php?size_id=${size_id}&num=1&client_time=${timex}&act=&mars_cid=000000`,
         dataType: "jsonp"
     }).then(res => {
-        if(res.code == 200){
+        if (res.code == 200) {
             console.log('[抢购成功!]')
         }
     })
@@ -20,8 +20,8 @@ function addToCart(size_id, timex) {
 $.ajax({
     url: `https://myi.vip.com/fav_sku/goods_detail?sale_status=FUTURE&count=50&warehouse=VIP_NH&is_old=1`,
     dataType: "jsonp"
-}).then(res=>{
-    if(res.data.future.length == 0){
+}).then(res => {
+    if (res.data.future.length == 0) {
         console.log('>> 收藏列表为空 >>');
         return;
     }
@@ -30,14 +30,22 @@ $.ajax({
     console.log('开始时间>>', new Date(startTime));
     console.log('准备商品>>', goodsList);
 
-    timer = setInterval(()=>{
-        if(Math.abs(new Date().getTime() - startTime)<1000){
-            const timex = parseInt(new Date().getTime() / 1000);
-            goodsList.forEach(item => {
-                addToCart(item, timex);
-            });
+    timer = setInterval(() => {
+        if (Math.abs(new Date().getTime() - startTime) < 1000) {
+            let count = 0;
+            let timer2 = setInterval(() => {
+                count++;
+                if (count > 5) {
+                    clearInterval(timer2);
+                }
+                const timex = parseInt(new Date().getTime() / 1000);
+                goodsList.forEach(item => {
+                    addToCart(item, timex);
+                });
+            }, 200);
+            clearInterval(timer);
         }
-    },25);
+    }, 25);
 
 });
 
