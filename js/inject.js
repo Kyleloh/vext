@@ -29,23 +29,21 @@ $.ajax({
     goodsList = res.data.future.filter(item => Math.abs(item.sell_time_from - startTime) < 3000).map(item => item.size_id);
     console.log('开始时间>>', new Date(startTime));
     console.log('准备商品>>', goodsList);
-
+        
     timer = setInterval(() => {
-        if (Math.abs(new Date().getTime() - startTime) < 1000) {
-            let count = 0;
+        if (Math.abs(new Date().getTime() - startTime) < 1500) {
             let timer2 = setInterval(() => {
-                count++;
-                if (count > 5) {
+                if (Math.abs(new Date().getTime() - startTime) > 1500) {
                     clearInterval(timer2);
                 }
                 const timex = parseInt(new Date().getTime() / 1000);
                 goodsList.forEach(item => {
                     addToCart(item, timex);
                 });
-            }, 200);
+            }, 300);
             clearInterval(timer);
         }
-    }, 25);
+    }, 10);
 
 });
 
