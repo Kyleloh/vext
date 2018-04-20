@@ -40,7 +40,7 @@ $.ajax({
                 goodsList.forEach(item => {
                     addToCart(item, timex);
                 });
-            }, 300);
+            }, 200);
             clearInterval(timer);
         }
     }, 10);
