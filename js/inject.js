@@ -31,16 +31,16 @@ $.ajax({
     console.log('准备商品>>', goodsList);
         
     timer = setInterval(() => {
-        if (Math.abs(new Date().getTime() - startTime) < 1500) {
+        if (Math.abs(new Date().getTime() - startTime) < 2000) {
             let timer2 = setInterval(() => {
-                if (Math.abs(new Date().getTime() - startTime) > 1500) {
+                if (Math.abs(new Date().getTime() - startTime) > 2000) {
                     clearInterval(timer2);
                 }
                 const timex = parseInt(new Date().getTime() / 1000);
                 goodsList.forEach(item => {
                     addToCart(item, timex);
                 });
-            }, 200);
+            }, 300);
             clearInterval(timer);
         }
     }, 10);
