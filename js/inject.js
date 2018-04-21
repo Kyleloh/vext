@@ -25,16 +25,17 @@ $.ajax({
         console.log('>> 收藏列表为空 >>');
         return;
     }
-    startTime = _.min(res.data.future.map(item => item.sell_time_from))-500;
+    startTime = _.min(res.data.future.map(item => item.sell_time_from));
     goodsList = res.data.future.filter(item => Math.abs(item.sell_time_from - startTime) < 3000).map(item => item.size_id);
     console.log('开始时间>>', new Date(startTime));
     console.log('准备商品>>', goodsList);
         
     timer = setInterval(() => {
-        if (Math.abs(new Date().getTime() - startTime) < 1500) {
+        if (Math.abs(new Date().getTime() - startTime) < 1800) {
             let timer2 = setInterval(() => {
-                if (Math.abs(new Date().getTime() - startTime) > 1500) {
+                if (Math.abs(new Date().getTime() - startTime) > 1800) {
                     clearInterval(timer2);
+                    console.log('本轮结束')
                 }
                 const timex = parseInt(new Date().getTime() / 1000);
                 goodsList.forEach(item => {
