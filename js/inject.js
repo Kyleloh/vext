@@ -4,13 +4,27 @@ const doneList = [];
 let startTime = new Date().getTime();
 let goodsList = [];
 let timer = null;
+let useBatch = true;
 
-function addToCart(size_id, timex) {
+function addToCart(size_id) {
+    const timex = parseInt(new Date().getTime() / 1000);
     $.ajax({
         url: `https://cart.vip.com/te2/add.php?size_id=${size_id}&num=1&client_time=${timex}&act=&mars_cid=000000`,
         dataType: "jsonp"
     }).then(res => {
         if (res.code == 200) {
+            console.log('[抢购成功!]')
+        }
+    })
+}
+
+function addBatchToCart(goodsList) {
+    const timex = parseInt(new Date().getTime() / 1000);
+    $.ajax({
+        url: `https://cart.vip.com/te2/add.php?&client_time=${timex}&act=mul&mars_cid=000000${goodsList.map(item => `&size_id[]=${item}`).join('')}${goodsList.map(() => '&num[]=1')}`,
+        dataType: "jsonp"
+    }).then(res => {
+        if (res.success == 200 && res.success.length > 0) {
             console.log('[抢购成功!]')
         }
     })
@@ -29,22 +43,46 @@ $.ajax({
     goodsList = res.data.future.filter(item => Math.abs(item.sell_time_from - startTime) < 3000).map(item => item.size_id);
     console.log('开始时间>>', new Date(startTime));
     console.log('准备商品>>', goodsList);
-        
-    timer = setInterval(() => {
-        if (Math.abs(new Date().getTime() - startTime) < 1800) {
-            let timer2 = setInterval(() => {
-                if (Math.abs(new Date().getTime() - startTime) > 1800) {
-                    clearInterval(timer2);
-                    console.log('本轮结束')
-                }
-                const timex = parseInt(new Date().getTime() / 1000);
-                goodsList.forEach(item => {
-                    addToCart(item, timex);
-                });
-            }, 300);
-            clearInterval(timer);
-        }
-    }, 10);
+
+    if (useBatch) {
+        // 批量接口
+        console.log('批量接口')
+        timer = setInterval(() => {
+            if (Math.abs(new Date().getTime() - startTime) < 400) {
+                let timer2 = setInterval(() => {
+                    if (Math.abs(new Date().getTime() - startTime) > 400) {
+                        clearInterval(timer2);
+                        console.log('本轮结束')
+                    }
+
+                    addBatchToCart(goodsList)
+
+                }, 150);
+                clearInterval(timer);
+            }
+        }, 10);
+    } else {
+        // 单个接口
+        console.log('单个接口')
+        timer = setInterval(() => {
+            if (Math.abs(new Date().getTime() - startTime) < 600) {
+                let timer2 = setInterval(() => {
+                    if (Math.abs(new Date().getTime() - startTime) > 600) {
+                        clearInterval(timer2);
+                        console.log('本轮结束')
+                    }
+
+                    goodsList.forEach(item => {
+                        addToCart(item);
+                    });
+
+                }, 300);
+                clearInterval(timer);
+            }
+        }, 10);
+    }
+
+
 
 });
 
