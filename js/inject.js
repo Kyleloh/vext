@@ -48,16 +48,16 @@ $.ajax({
         // 批量接口
         console.log('批量接口')
         timer = setInterval(() => {
-            if (Math.abs(new Date().getTime() - startTime) < 400) {
+            if (new Date().getTime() - startTime > -250) {
                 let timer2 = setInterval(() => {
-                    if (Math.abs(new Date().getTime() - startTime) > 400) {
+                    if (new Date().getTime() - startTime > 100) {
                         clearInterval(timer2);
                         console.log('本轮结束')
                     }
 
                     addBatchToCart(goodsList)
 
-                }, 150);
+                }, 50);
                 clearInterval(timer);
             }
         }, 10);
@@ -65,9 +65,9 @@ $.ajax({
         // 单个接口
         console.log('单个接口')
         timer = setInterval(() => {
-            if (Math.abs(new Date().getTime() - startTime) < 600) {
+            if (new Date().getTime() - startTime > -600) {
                 let timer2 = setInterval(() => {
-                    if (Math.abs(new Date().getTime() - startTime) > 600) {
+                    if (new Date().getTime() - startTime > 600) {
                         clearInterval(timer2);
                         console.log('本轮结束')
                     }
@@ -85,5 +85,6 @@ $.ajax({
 
 
 });
+
 
 
