@@ -48,16 +48,16 @@ $.ajax({
         // 批量接口
         console.log('批量接口')
         timer = setInterval(() => {
-            if (new Date().getTime() - startTime > -250) {
+            if (new Date().getTime() - startTime > -240) {
                 let timer2 = setInterval(() => {
-                    if (new Date().getTime() - startTime > 100) {
+                    if (new Date().getTime() - startTime > 0) {
                         clearInterval(timer2);
                         console.log('本轮结束')
                     }
 
                     addBatchToCart(goodsList)
 
-                }, 50);
+                }, 30);
                 clearInterval(timer);
             }
         }, 10);
