@@ -39,7 +39,7 @@ $.ajax({
         console.log('>> 收藏列表为空 >>');
         return;
     }
-    startTime = _.min(res.data.future.map(item => item.sell_time_from));
+    startTime = res.data.future.map(item => item.sell_time_from).reduce((a,b)=>Math.min(a,b));
     goodsList = res.data.future.filter(item => Math.abs(item.sell_time_from - startTime) < 3000).map(item => item.size_id);
     console.log('开始时间>>', new Date(startTime));
     console.log('准备商品>>', goodsList);
@@ -54,7 +54,7 @@ $.ajax({
                         clearInterval(timer2);
                         console.log('本轮结束')
                     }
-
+                    console.log('【addBatchToCart】');
                     addBatchToCart(goodsList)
 
                 }, 30);
@@ -65,9 +65,9 @@ $.ajax({
         // 单个接口
         console.log('单个接口')
         timer = setInterval(() => {
-            if (new Date().getTime() - startTime > -600) {
+            if (new Date().getTime() - startTime > -1000) {
                 let timer2 = setInterval(() => {
-                    if (new Date().getTime() - startTime > 600) {
+                    if (new Date().getTime() - startTime > 0) {
                         clearInterval(timer2);
                         console.log('本轮结束')
                     }
@@ -76,7 +76,7 @@ $.ajax({
                         addToCart(item);
                     });
 
-                }, 300);
+                }, 100);
                 clearInterval(timer);
             }
         }, 10);
