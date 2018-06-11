@@ -76,7 +76,7 @@ $.ajax({
                         addToCart(item);
                     });
 
-                }, 100);
+                }, 240);
                 clearInterval(timer);
             }
         }, 10);
