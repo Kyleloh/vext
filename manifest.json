@@ -19,7 +19,6 @@
         }
     ],
     "web_accessible_resources": [
-        "js/lodash.min.js",
         "js/inject.js"
     ]
 }
