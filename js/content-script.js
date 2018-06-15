@@ -13,5 +13,4 @@ function injectCustomJs(jsPath)
     document.querySelector('body').appendChild(temp);
 }
 
-injectCustomJs("js/lodash.min.js");
 injectCustomJs("js/inject.js");
